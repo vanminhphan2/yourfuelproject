@@ -52,42 +52,42 @@ class _RootPageState extends State<RootPage> {
         builder: (context, snapshot) {
           return Scaffold(
             bottomNavigationBar: CurvedNavigationBar(
-              backgroundColor: AppColors.primaryColorDark,
-              items: <Widget>[
-                Icon(Icons.home, size: 30),
-                Icon(Icons.list, size: 30),
-                Icon(Icons.compare_arrows, size: 30),
-                Icon(Icons.add, size: 30),
-              ],
-              onTap: (index) => onTapMenuBar(index)
+                backgroundColor: AppColors.primaryColorDark,
+                items: <Widget>[
+                  Icon(Icons.home, size: 30),
+                  Icon(Icons.list, size: 30),
+                  Icon(Icons.compare_arrows, size: 30),
+                  Icon(Icons.add, size: 30),
+                ],
+                onTap: (index) => onTapMenuBar(index)
             ),
             body: pageList[snapshot.data ?? 0],
           );
 
-            // Scaffold(
-            //   body: pageList[snapshot.data ?? 0],
-            //   bottomNavigationBar: BottomNavigationBar(
-            //       type: BottomNavigationBarType.fixed,
-            //       currentIndex: snapshot.data ?? 0,
-            //       items: const [
-            //         BottomNavigationBarItem(
-            //           icon: Icon(Icons.home),
-            //           label: "Store",
-            //         ),
-            //         BottomNavigationBarItem(
-            //           icon: Icon(Icons.contacts),
-            //           label: "News",
-            //         ),
-            //         BottomNavigationBarItem(
-            //           icon: Icon(Icons.email),
-            //           label: "Messages",
-            //         ),
-            //         BottomNavigationBarItem(
-            //           icon: Icon(Icons.account_circle),
-            //           label: "Profile",
-            //         ),
-            //       ],
-            //       onTap: (int index) => onTapMenuBar(index)));
+          // Scaffold(
+          //   body: pageList[snapshot.data ?? 0],
+          //   bottomNavigationBar: BottomNavigationBar(
+          //       type: BottomNavigationBarType.fixed,
+          //       currentIndex: snapshot.data ?? 0,
+          //       items: const [
+          //         BottomNavigationBarItem(
+          //           icon: Icon(Icons.home),
+          //           label: "Store",
+          //         ),
+          //         BottomNavigationBarItem(
+          //           icon: Icon(Icons.contacts),
+          //           label: "News",
+          //         ),
+          //         BottomNavigationBarItem(
+          //           icon: Icon(Icons.email),
+          //           label: "Messages",
+          //         ),
+          //         BottomNavigationBarItem(
+          //           icon: Icon(Icons.account_circle),
+          //           label: "Profile",
+          //         ),
+          //       ],
+          //       onTap: (int index) => onTapMenuBar(index)));
         });
   }
 
