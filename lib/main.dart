@@ -4,10 +4,10 @@ import 'package:your_fuel_app/provider/base_provider.dart';
 import 'package:your_fuel_app/provider/main_provider.dart';
 import 'package:your_fuel_app/ui/root_page.dart';
 import 'package:your_fuel_app/utils/app_config.dart';
-import 'package:your_fuel_app/utils/app_constants.dart';
+import 'package:your_fuel_app/utils/app_utils.dart';
 import 'package:your_fuel_app/widgets/app_loading.dart';
 
-import 'ui/login.dart';
+import 'ui/login/login.dart';
 
 void main() {
   AppConfig.build(Environment.dev);
@@ -34,6 +34,7 @@ class _MyHomeState extends State<MyApp> {
     return MaterialApp(
       title: "Test UI App",
       navigatorKey: AppConstants.navigatorKey,
+      debugShowCheckedModeBanner: false,
       builder: (context, child){
         setContext(context);
         return Stack(children: [
