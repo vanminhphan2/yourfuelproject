@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:your_fuel_app/controller/app_controller.dart';
-import 'package:your_fuel_app/ui/account.dart';
-import 'package:your_fuel_app/ui/home.dart';
-import 'package:your_fuel_app/ui/login.dart';
-import 'package:your_fuel_app/utils/app_constants.dart';
+import 'package:your_fuel_app/ui/profile/account.dart';
+import 'package:your_fuel_app/ui/home/home.dart';
+import 'package:your_fuel_app/ui/login/login.dart';
+import 'package:your_fuel_app/utils/app_utils.dart';
 import 'package:your_fuel_app/widgets/curved_navigation_bar.dart';
 
 class RootPage extends StatefulWidget {

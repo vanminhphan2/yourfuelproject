@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:your_fuel_app/utils/app_constants.dart';
+import 'package:your_fuel_app/utils/app_utils.dart';
 
 class HalfCircleCustom extends CustomPainter {
   @override
