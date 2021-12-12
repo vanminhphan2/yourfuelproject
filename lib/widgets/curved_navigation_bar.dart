@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:your_fuel_app/utils/app_utils.dart';
 import 'nav_button.dart';
 import 'nav_custom_painter.dart';
 
@@ -20,19 +21,19 @@ class CurvedNavigationBar extends StatefulWidget {
     Key? key,
     required this.items,
     this.index = 0,
-    this.color = Colors.white,
+    this.color = AppColors.colorMenuBar,
     this.buttonBackgroundColor,
-    this.backgroundColor = Colors.blueAccent,
+    this.backgroundColor = AppColors.colorMenuBar,
     this.onTap,
     _LetIndexPage? letIndexChange,
     this.animationCurve = Curves.easeOut,
     this.animationDuration = const Duration(milliseconds: 400),
-    this.height = 75.0,
+    this.height = 60.0,
   })  : letIndexChange = letIndexChange ?? ((_) => true),
         assert(items != null),
         assert(items.length >= 1),
         assert(0 <= index && index < items.length),
-        assert(0 <= height && height <= 75.0),
+        assert(0 <= height && height <= 60.0),
         super(key: key);
 
   @override
@@ -145,14 +146,14 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar>
                 height: 100.0,
                 child: Row(
                     children: widget.items.map((item) {
-                      return NavButton(
-                        onTap: _buttonTap,
-                        position: _pos,
-                        length: _length,
-                        index: widget.items.indexOf(item),
-                        child: Center(child: item),
-                      );
-                    }).toList())),
+                  return NavButton(
+                    onTap: _buttonTap,
+                    position: _pos,
+                    length: _length,
+                    index: widget.items.indexOf(item),
+                    child: Center(child: item),
+                  );
+                }).toList())),
           ),
         ],
       ),

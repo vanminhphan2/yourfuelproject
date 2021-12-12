@@ -1,13 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:your_fuel_app/controller/app_controller.dart';
+import 'package:your_fuel_app/ui/news/news.dart';
 import 'package:your_fuel_app/ui/profile/account.dart';
 import 'package:your_fuel_app/ui/home/home.dart';
-import 'package:your_fuel_app/ui/login/login.dart';
 import 'package:your_fuel_app/utils/app_utils.dart';
 import 'package:your_fuel_app/widgets/curved_navigation_bar.dart';
+
+import 'messages/messages.dart';
 
 class RootPage extends StatefulWidget {
   RootPage({
@@ -19,10 +22,6 @@ class RootPage extends StatefulWidget {
 }
 
 class _RootPageState extends State<RootPage> {
-  StreamController onTabMenuController = StreamController<int>.broadcast();
-
-  Stream get onTabMenuStream => onTabMenuController.stream;
-
   final onTabMenu = PublishSubject<int>();
 
   List<Widget> pageList = [];
@@ -32,9 +31,9 @@ class _RootPageState extends State<RootPage> {
   void initState() {
     super.initState();
     pageList = [
-      HomePage(),
-      const AccountPage(),
-      const LoginPage(),
+      const HomePage(),
+      const News(),
+      const Messages(),
       const AccountPage(),
     ];
 
@@ -49,45 +48,43 @@ class _RootPageState extends State<RootPage> {
   Widget build(BuildContext context) {
     return StreamBuilder<int>(
         stream: onTabMenu.stream,
+        initialData: 0,
         builder: (context, snapshot) {
           return Scaffold(
-            bottomNavigationBar: CurvedNavigationBar(
-                backgroundColor: AppColors.primaryColorDark,
-                items: <Widget>[
-                  Icon(Icons.home, size: 30),
-                  Icon(Icons.list, size: 30),
-                  Icon(Icons.compare_arrows, size: 30),
-                  Icon(Icons.add, size: 30),
+              backgroundColor: AppColors.pinkLightPurple,
+              body: Stack(
+                children: [
+                  IndexedStack(index: snapshot.data, children: pageList),
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    child: CurvedNavigationBar(
+                        backgroundColor: AppColors.transparent,
+                        items: <Widget>[
+                          SvgPicture.asset(
+                            'assets/icons/icon_store.svg',
+                            width: 50.0,
+                            height: 50.0,
+                          ),
+                          SvgPicture.asset(
+                            'assets/icons/icon_news.svg',
+                            width: 30.0,
+                            height: 30.0,
+                          ),
+                          SvgPicture.asset(
+                            'assets/icons/icon_chat.svg',
+                            width: 30.0,
+                            height: 30.0,
+                          ),
+                          SvgPicture.asset(
+                            'assets/icons/icon_account.svg',
+                            width: 30.0,
+                            height: 30.0,
+                          ),
+                        ],
+                        onTap: (index) => onTapMenuBar(index)),
+                  ),
                 ],
-                onTap: (index) => onTapMenuBar(index)
-            ),
-            body: pageList[snapshot.data ?? 0],
-          );
-
-          // Scaffold(
-          //   body: pageList[snapshot.data ?? 0],
-          //   bottomNavigationBar: BottomNavigationBar(
-          //       type: BottomNavigationBarType.fixed,
-          //       currentIndex: snapshot.data ?? 0,
-          //       items: const [
-          //         BottomNavigationBarItem(
-          //           icon: Icon(Icons.home),
-          //           label: "Store",
-          //         ),
-          //         BottomNavigationBarItem(
-          //           icon: Icon(Icons.contacts),
-          //           label: "News",
-          //         ),
-          //         BottomNavigationBarItem(
-          //           icon: Icon(Icons.email),
-          //           label: "Messages",
-          //         ),
-          //         BottomNavigationBarItem(
-          //           icon: Icon(Icons.account_circle),
-          //           label: "Profile",
-          //         ),
-          //       ],
-          //       onTap: (int index) => onTapMenuBar(index)));
+              ));
         });
   }
 
@@ -96,11 +93,5 @@ class _RootPageState extends State<RootPage> {
       this.index = index;
       onTabMenu.add(index);
     }
-  }
-
-  @override
-  void dispose() {
-    onTabMenuController.close();
-    super.dispose();
   }
 }

@@ -11,12 +11,10 @@ import 'ui/login/login.dart';
 
 void main() {
   AppConfig.build(Environment.dev);
-  runApp(MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_)=>LoadingProvider()),
-        ChangeNotifierProvider(create: (context) => MainProvider()),
-      ],
-      child: const MyApp()));
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => LoadingProvider()),
+    ChangeNotifierProvider(create: (context) => MainProvider()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -35,19 +33,25 @@ class _MyHomeState extends State<MyApp> {
       title: "Test UI App",
       navigatorKey: AppConstants.navigatorKey,
       debugShowCheckedModeBanner: false,
-      builder: (context, child){
+      builder: (context, child) {
         setContext(context);
-        return Stack(children: [
-          child!,
-          Consumer<LoadingProvider>(builder: (_,loadingProvider,__){
-            return loadingProvider.isLoading? const AppLoading(): SizedBox();
-          })
-        ],);
+        return Stack(
+          children: [
+            child!,
+            Consumer<LoadingProvider>(builder: (_, loadingProvider, __) {
+              return loadingProvider.isLoading
+                  ? const AppLoading()
+                  : SizedBox();
+            })
+          ],
+        );
       },
-      theme: ThemeData(primaryColor: AppColors.primaryColor,
+      theme: ThemeData(
+          primaryColor: AppColors.primaryColor,
           primaryColorDark: AppColors.primaryColorDark,
           primaryColorLight: AppColors.primaryColorLight),
       home: Scaffold(
+        backgroundColor: AppColors.pinkLightPurple,
         body: isLogin ? RootPage() : const LoginPage(),
       ),
     );

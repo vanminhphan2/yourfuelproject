@@ -45,23 +45,30 @@ class _LoginPageState extends State<LoginPage> {
           Expanded(
             flex: 1,
             child: Container(
-              padding: const EdgeInsets.only(left: 10,right: 10),
+              padding: const EdgeInsets.only(left: 10, right: 10),
               margin: const EdgeInsets.only(top: 10),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                  colors: [Theme.of(context).primaryColor,Theme.of(context).primaryColorDark])),
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [
+                        Theme.of(context).primaryColor,
+                        Theme.of(context).primaryColorDark
+                      ])),
               child: TextButton(
                   onPressed: () async {
                     print(
                         "phone: ${phoneValue.text}    pass: ${passValue.text}");
                     appController.loading.show();
-                    await Future.delayed(Duration(seconds: 2));
+                    await Future.delayed(Duration(milliseconds: 200));
                     context.read<MainProvider>().setIsLogin(true);
                   },
-                  child: const Text("Login",style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),)),
+                  child: const Text(
+                    "Login",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  )),
             ),
           ),
           Expanded(

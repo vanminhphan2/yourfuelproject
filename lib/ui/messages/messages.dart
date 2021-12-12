@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:your_fuel_app/utils/app_utils.dart';
 
-class AccountPage extends StatefulWidget {
-  const AccountPage({Key? key}) : super(key: key);
+class Messages extends StatefulWidget {
+  const Messages({Key? key}) : super(key: key);
 
   @override
-  _AccountPageState createState() => _AccountPageState();
+  _MessagesState createState() => _MessagesState();
 }
 
-class _AccountPageState extends State<AccountPage> {
+class _MessagesState extends State<Messages> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
