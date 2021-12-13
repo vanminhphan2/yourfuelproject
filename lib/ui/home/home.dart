@@ -2,9 +2,10 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:your_fuel_app/models/staff.dart';
+import 'package:your_fuel_app/ui/daily_check/daily_check.dart';
 import 'package:your_fuel_app/utils/app_utils.dart';
 import 'package:your_fuel_app/widgets/bg_top_home.dart';
-import 'package:your_fuel_app/widgets/store_feature.dart';
+import 'package:your_fuel_app/ui/home/store_feature.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -130,29 +131,54 @@ class _HomePageState extends State<HomePage> {
               ),
               Expanded(
                   child: Container(
-                    padding: EdgeInsets.only(top: 10,left: 10, right: 10),
-                    decoration: const BoxDecoration(
-                        gradient: LinearGradient(colors: [
-                          AppColors.primaryColor,
-                          AppColors.primaryColorDark
-                        ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
-                    child: GridView.count(
-                      crossAxisCount: 3,
-                      mainAxisSpacing: 10,
-                      physics: const NeverScrollableScrollPhysics(),
-                      children: [
-                        StoreFeature(icon: "assets/icons/icon_worker.svg",name: "Staff",),
-                        StoreFeature(icon: "assets/icons/icon_gas_station.svg",name: "Checkout",),
-                        StoreFeature(icon: "assets/icons/icon_tank_truck.svg",name: "Import Fuel",),
-                        StoreFeature(icon: "assets/icons/icon_check_note.svg",name: "Daily Check",),
-                        StoreFeature(icon: "assets/icons/icon_statistics.svg",name: "Statistics",),
-                        StoreFeature(icon: "assets/icons/icon_contacts.svg",name: "Feedback",),
-                      ],
+                padding: EdgeInsets.only(top: 10, left: 10, right: 10),
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(colors: [
+                  AppColors.primaryColor,
+                  AppColors.primaryColorDark
+                ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+                child: GridView.count(
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 10,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    StoreFeature(
+                      icon: "assets/icons/icon_worker.svg",
+                      name: "Staff",
                     ),
-                  ))
+                    StoreFeature(
+                      icon: "assets/icons/icon_gas_station.svg",
+                      name: "Checkout",
+                    ),
+                    StoreFeature(
+                      icon: "assets/icons/icon_tank_truck.svg",
+                      name: "Import Fuel",
+                    ),
+                    InkWell(
+                      onTap: () => _onClickDailyCheck(context),
+                      child: StoreFeature(
+                        icon: "assets/icons/icon_check_note.svg",
+                        name: "Daily Check",
+                      ),
+                    ),
+                    StoreFeature(
+                      icon: "assets/icons/icon_statistics.svg",
+                      name: "Statistics",
+                    ),
+                    StoreFeature(
+                      icon: "assets/icons/icon_contacts.svg",
+                      name: "Feedback",
+                    ),
+                  ],
+                ),
+              ))
             ],
           ),
         ]));
+  }
+
+  void _onClickDailyCheck(BuildContext context) {
+    AppHelper.navigatePush(context, AppScreenName.dailyCheck, DailyCheck());
   }
 
   void _onClickStaff() {}
