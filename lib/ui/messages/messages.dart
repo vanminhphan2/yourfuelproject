@@ -12,7 +12,7 @@ class _MessagesState extends State<Messages> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        top: true,
+        bottom: false,
         child: Stack(
           children: [
             Container(
