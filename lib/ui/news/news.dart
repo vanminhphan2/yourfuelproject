@@ -85,7 +85,7 @@ class _NewsState extends State<News> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        top: true,
+        bottom: false,
         child: Stack(
           children: [
             Container(

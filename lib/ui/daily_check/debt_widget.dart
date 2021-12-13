@@ -4,7 +4,7 @@ import 'package:your_fuel_app/models/debt.dart';
 import 'package:your_fuel_app/utils/app_utils.dart';
 
 class DebtItem extends StatefulWidget {
-  DebtItem({Key? key, required this.onDelete, required this.item})
+  const DebtItem({Key? key, required this.onDelete, required this.item})
       : super(key: key);
 
   final VoidCallback onDelete;
@@ -40,16 +40,16 @@ class _DebtItemState extends State<DebtItem> {
               controller: debtorNameController,
               maxLength: 50,
               keyboardType: TextInputType.text,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   counter: Offstage(),
                   labelText: "Tên",
                   fillColor: AppColors.primaryColor),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 5,
           ),
-          Expanded(
+          const Expanded(
             flex: 5,
             child: TextField(
               maxLength: 11,
@@ -60,12 +60,12 @@ class _DebtItemState extends State<DebtItem> {
                   fillColor: AppColors.primaryColor),
             ),
           ),
-          Expanded(flex: 3, child: DropdownType()),
+          const Expanded(flex: 3, child: DropdownType()),
           Expanded(
               flex: 1,
               child: InkWell(
                 onTap: widget.onDelete,
-                child: Icon(
+                child: const Icon(
                   Icons.highlight_remove,
                   color: Colors.red,
                 ),
@@ -73,6 +73,12 @@ class _DebtItemState extends State<DebtItem> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    debtorNameController.dispose();
+    super.dispose();
   }
 }
 

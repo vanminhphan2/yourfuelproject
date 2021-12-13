@@ -55,8 +55,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        bottom: true,
-        top: true,
+        bottom: false,
         child: Stack(children: [
           Container(
             decoration: const BoxDecoration(color: AppColors.pinkLightPurple),
