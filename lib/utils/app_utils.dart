@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'dart:convert';
+import 'package:crypto/crypto.dart' as crypto;
 
 class AppConstants {
   // GlobalKey
@@ -85,7 +87,7 @@ class AppHelper {
   /// Navigate push with callback
   static void navigatePush(context, String screenName, Widget screen,
       [Function(Object)? callback]) {
-    if (context == null) return null;
+    if (context == null) return;
     Navigator.push(
         context,
         CupertinoPageRoute(
@@ -96,6 +98,25 @@ class AppHelper {
         callback(data);
       }
     });
+  }
+  /// Navigate push with callback
+  static void navigateReplace(context, String screenName, Widget screen,
+      [Function(Object)? callback]) {
+    if (context == null) return;
+    Navigator.pushReplacement(
+        context,
+        CupertinoPageRoute(
+          builder: (context) => screen,
+          settings: RouteSettings(name: screenName),
+        )).then((data) {
+      if (data != null && callback != null) {
+        callback(data);
+      }
+    });
+  }
+
+  static String generateMd5(String input) {
+    return crypto.md5.convert(utf8.encode(input)).toString();
   }
 }
 
