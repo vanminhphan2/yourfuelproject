@@ -1,50 +1,46 @@
 class FuelStation {
   int id;
-  int type; //1: diesel DO 0,005%S, 2: diesel DO 0,25%S, 3: Gasoline A92, 4: Gasoline A95,5: Gasoline E5
+  int type; //0: Tien mat, 1: Other Fuel, 2: diesel DO 0,005%S, 3: diesel DO 0,25%S, 4: Gasoline A92, 5: Gasoline A95,6: Gasoline E5
   int oldElectronicNumber;
   int newElectronicNumber;
   int engineNumber;
   int numberStation;
-
-  String fullTypeName() {
-    switch (type) {
-      case 1:
-        return "Diesel 0,05%S station ";
-      case 2:
-        return "Diesel 0,025%S station ";
-      case 3:
-        return "Gasoline A92 station ";
-      case 4:
-        return "Gasoline A95 station ";
-      case 5:
-        return "Gasoline E5 station ";
-      default:
-        return "Diesel 0,05%S station ";
-    }
-  }
-
-  String compactTypeName() {
-    switch (type) {
-      case 1:
-        return "DO 05 S";
-      case 2:
-        return "DO 025 S";
-      case 3:
-        return "A92 S";
-      case 4:
-        return "A95 S";
-      case 5:
-        return "E5 S";
-      default:
-        return "DO 05 S";
-    }
-  }
+  int totalStation;
+  String typeName;
+  String fullTypeName;
 
   FuelStation({this.id =0, this.type=1, this.oldElectronicNumber=0,
-      this.newElectronicNumber=0, this.engineNumber=0, this.numberStation=0});
+      this.newElectronicNumber=0, this.engineNumber=0, this.numberStation=0,this.totalStation=0,this.fullTypeName="",this.typeName=""});
 
   @override
   String toString() {
-    return 'FuelStation{id: $id, type: $type, oldElectronicNumber: $oldElectronicNumber, newElectronicNumber: $newElectronicNumber, engineNumber: $engineNumber, numberStation: $numberStation}';
+    return 'FuelStation{id: $id, type: $type, oldElectronicNumber: $oldElectronicNumber, newElectronicNumber: $newElectronicNumber, engineNumber: $engineNumber, numberStation: $numberStation, totalStation: $totalStation, typeName: $typeName, fullTypeName: $fullTypeName}';
+  }
+
+
+  Map<String, dynamic> toJson()=> {
+    "id":id,
+    "type":type,
+    "oldElectronicNumber":oldElectronicNumber,
+    "newElectronicNumber":newElectronicNumber,
+    "engineNumber":engineNumber,
+    "numberStation":numberStation,
+    "totalStation":totalStation,
+    "typeName":typeName,
+    "fullTypeName":fullTypeName,
+  };
+
+  factory FuelStation.fromJson(json){
+    return FuelStation(
+        id: json["id"]??"",
+        type: json["type"]??"",
+        oldElectronicNumber: json["oldElectronicNumber"]??"",
+        newElectronicNumber: json["newElectronicNumber"]??"",
+        engineNumber: json["engineNumber"]??"",
+        numberStation: json["numberStation"]??"",
+        totalStation: json["totalStation"]??"",
+        typeName: json["typeName"]??"",
+        fullTypeName: json["fullTypeName"]??""
+    );
   }
 }

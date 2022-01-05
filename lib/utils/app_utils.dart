@@ -126,4 +126,5 @@ class AppScreenName {
   static const String home = 'homeScreen';
   static const String main = 'mainAppScreen';
   static const String dailyCheck = 'dailyCheckScreen';
+  static const String setting = 'setting';
 }

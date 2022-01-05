@@ -5,7 +5,7 @@ import 'package:yourfuel/models/debt.dart';
 import 'package:yourfuel/models/fuel_price.dart';
 import 'package:yourfuel/utils/app_utils.dart';
 
-import 'daily_check.dart';
+import 'check_out.dart';
 
 class DebtItem extends StatefulWidget {
     DebtItem({
