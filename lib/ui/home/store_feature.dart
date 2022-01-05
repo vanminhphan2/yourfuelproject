@@ -28,7 +28,7 @@ class StoreFeature extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 3,
         ),
         Text(

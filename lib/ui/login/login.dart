@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:yourfuel/models/user.dart';
+import 'package:yourfuel/ui/login/login_bloc.dart';
 import 'package:yourfuel/ui/register/register.dart';
 import 'package:yourfuel/utils/app_utils.dart';
 
@@ -11,11 +14,14 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  LoginBloc _bloc= LoginBloc();
   TextEditingController phoneValue = TextEditingController();
   TextEditingController passValue = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    phoneValue.text="0329269019";
+    passValue.text="12345678";
     return Scaffold(
       appBar: AppBar(
         title: const Text("Login"),
@@ -46,42 +52,56 @@ class _LoginPageState extends State<LoginPage> {
                   maxLength: 50,
                   maxLines: 1,
                   keyboardType: TextInputType.text,
+                  obscureText: true,
                   decoration: const InputDecoration(labelText: "Password"),
                 ),
               ),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
-                    height: 50,
-                    padding: const EdgeInsets.only(left: 30, right: 30),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [
-                              Theme.of(context).primaryColor,
-                              Theme.of(context).primaryColorDark
-                            ])),
-                    child: const Text(
-                      "Login",
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
+                  InkWell(
+                    onTap: (){
+                      _bloc.login(context,phoneValue.text, passValue.text);
+                    },
+                    child: Container(
+                      height: 50,
+                      padding: const EdgeInsets.only(left: 30, right: 30),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [
+                                Theme.of(context).primaryColor,
+                                Theme.of(context).primaryColorDark
+                              ])),
+                      child: const Text(
+                        "Login",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               InkWell(
                   onTap: () async {
                     print("click to register..");
-                    AppHelper.navigatePush(context, AppScreenName.dailyCheck, const RegisterPage());
+                     AppHelper.navigatePush(context, AppScreenName.register,
+                        const RegisterPage(),(result){
+                       var user=result as User;
+                           print("user: "+user.toString());
+                           phoneValue.text=user.phone;
+                         });
                   },
                   child: const Text("Register account",
                       style: TextStyle(
-                          color: AppColors.primaryColor, fontWeight: FontWeight.bold)))
+                          color: AppColors.primaryColor,
+                          fontWeight: FontWeight.bold)))
             ],
           ),
         ),

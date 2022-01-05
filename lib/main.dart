@@ -8,7 +8,9 @@ import 'package:yourfuel/ui/root_page.dart';
 import 'package:yourfuel/utils/app_config.dart';
 import 'package:yourfuel/utils/app_utils.dart';
 import 'package:yourfuel/widgets/app_loading.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'generated/l10n.dart';
 import 'ui/login/login.dart';
 
 void main() async {
@@ -35,6 +37,14 @@ class _MyHomeState extends State<MyApp> {
 
     return MaterialApp(
       title: "Test UI App",
+      localizationsDelegates: const [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+      locale: const Locale('vi',"VN"),
       navigatorKey: AppConstants.navigatorKey,
       debugShowCheckedModeBanner: false,
       builder: (context, child) {
