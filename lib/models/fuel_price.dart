@@ -1,6 +1,5 @@
 class FuelPrice {
-  int
-      type; //0: TIEN MAT; 1:other fuel
+  int type; //0: TIEN MAT; 1:other fuel
   int price;
   String name;
 

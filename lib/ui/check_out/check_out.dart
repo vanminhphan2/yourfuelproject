@@ -470,7 +470,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                     initialData: false,
                     builder: (context, snapshot) {
                       return NormalButton(
-                        onTap: ()=>_bloc.clickSaveResult(),
+                        onTap: ()=>_bloc.clickSaveResult(context),
                         buttonName: "Lưu kết quả",
                         canClick: snapshot.data!,
                       );

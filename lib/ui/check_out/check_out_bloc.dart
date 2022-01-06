@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:yourfuel/controller/app_controller.dart';
 import 'package:yourfuel/generated/l10n.dart';
+import 'package:yourfuel/models/checkout_data.dart';
 import 'package:yourfuel/models/debt.dart';
 import 'package:yourfuel/models/fuel_price.dart';
 import 'package:yourfuel/models/fuel_station.dart';
@@ -16,7 +18,6 @@ class CheckOutBlock {
   final onClickDebtListener = PublishSubject<List<Debt>>();
   final onClickCalculateListener = PublishSubject<bool>();
   final onCanSaveResult = PublishSubject<bool>();
-  late BuildContext context;
 
   List<Debt> debtList = [];
 
@@ -35,6 +36,7 @@ class CheckOutBlock {
   Future<void> getData() async {
     try {
       appController.loading.show();
+
       final stationList = await FireBase().getStationsUser();
       List<FuelPrice> fuelPrices = await FireBase().getPriceList();
 
@@ -177,7 +179,12 @@ class CheckOutBlock {
   }
 
   void addDebt() {
-    debtList.add(Debt(debtList.length + 1, 1, "", fuelPriceList.first, 0, ""));
+    debtList.add(Debt(
+        id: debtList.length + 1,
+        idDailyCheck: 1,
+        debtorName: "",
+        fuelType: fuelPriceList.first,
+        value: 0));
     onClickDebtListener.add(debtList);
   }
 
@@ -201,12 +208,55 @@ class CheckOutBlock {
     return total;
   }
 
-  void clickSaveResult() {
+  void clickSaveResult(BuildContext context) async {
     print("clickSaveResult");
-      // appController.dialog.showDefaultDialog(
-      //     title: S.of(mainContext).Notify, message: "Doanh thu phai la so duong");
-      //save data
-    
+    //save data
+
+    appController.dialog.showCallbackDialog(
+        title: S.of(context).Notify,
+        message: "Sẽ thoát sau khi lưu! Bạn muốn lưu không?",
+        callback: () async {
+          try {
+            appController.loading.show();
+            final date = DateTime.now();
+            final daytime =
+                "${date.day.toString().padLeft(2, "0")}/${date.month.toString().padLeft(2, "0")}/${date.year}";
+
+            final list = await FireBase().getCheckoutListByDate(daytime);
+            print("rio => ${list.toString()}");
+
+            int numberCheck = (list.isEmpty) ? 1 : list.length + 1;
+            final dataCheckout = CheckOutData(
+                id: 1,
+                numberCheckout: numberCheck,
+                totalSale: totalSale,
+                totalDebt: totalDebt,
+                actuallyReceived: actuallyReceived,
+                date: daytime,
+                debtList: debtList,
+                fuelPriceList: fuelPriceList
+                    .skipWhile((value) => value.type <= 1)
+                    .toList(),
+                fuelStationList: fuelStationList);
+            await FireBase().addCheckoutData(dataCheckout,date.millisecondsSinceEpoch);
+
+            fuelStationList.forEach((e) {
+              e.oldElectronicNumber = e.newElectronicNumber;
+              e.newElectronicNumber = 0;
+              e.engineNumber = 0;
+            });
+
+            await FireBase().updateStationUser(fuelStationList, false);
+
+            ScaffoldMessenger.of(mainContext).showSnackBar(
+                SnackBar(content: Text(S.of(mainContext).Result_saved)));
+            appController.loading.hide();
+            Navigator.of(context).pop();
+          } catch (e) {
+            appController.loading.hide();
+            print("rio error: " + e.toString());
+          }
+        });
   }
 
   void dispose() {
