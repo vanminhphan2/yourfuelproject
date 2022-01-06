@@ -1,4 +1,5 @@
 {
   "Station_number": "Station",
-  "Notify": "Warning!"
+  "Notify": "Warning!",
+  "Result_saved": "Result saved!"
 }

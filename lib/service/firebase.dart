@@ -13,15 +13,15 @@ class FireBase {
   final _storage = FirebaseStorage.instance;
 
   final CollectionReference _usersCollection =
-      FirebaseFirestore.instance.collection('users');
+  FirebaseFirestore.instance.collection('users');
   final CollectionReference _stationsUserCollection =
-      FirebaseFirestore.instance.collection('station_user');
+  FirebaseFirestore.instance.collection('station_user');
   final CollectionReference _stationsDefaultCollection =
-      FirebaseFirestore.instance.collection('station_default');
+  FirebaseFirestore.instance.collection('station_default');
   final CollectionReference _priceListCollection =
-      FirebaseFirestore.instance.collection('price_list');
+  FirebaseFirestore.instance.collection('price_list');
   final CollectionReference _checkoutCollection =
-      FirebaseFirestore.instance.collection('checkout');
+  FirebaseFirestore.instance.collection('checkout');
 
   Future<bool> checkExitsPhone(String phone) async {
     var isExits = false;
@@ -33,12 +33,11 @@ class FireBase {
     return isExits;
   }
 
-  Future registerUser(
-      {required String phone,
-      required Function(PhoneAuthCredential) verificationCompleted,
-      required Function(FirebaseAuthException) verificationFailed,
-      required Function(String, int?) codeSent,
-      required Function(String?) codeAutoRetrievalTimeout}) async {
+  Future registerUser({required String phone,
+    required Function(PhoneAuthCredential) verificationCompleted,
+    required Function(FirebaseAuthException) verificationFailed,
+    required Function(String, int?) codeSent,
+    required Function(String?) codeAutoRetrievalTimeout}) async {
     _fireAuth.setLanguageCode("vn");
     _fireAuth.verifyPhoneNumber(
         phoneNumber: phone,
@@ -53,8 +52,8 @@ class FireBase {
     await _usersCollection.doc(user.phone).set(user.toJson());
   }
 
-  Future<UserCredential> signInWithCredential(
-      String verificationId, String smsCode) async {
+  Future<UserCredential> signInWithCredential(String verificationId,
+      String smsCode) async {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: verificationId, smsCode: smsCode);
     return await _fireAuth.signInWithCredential(credential);
@@ -72,7 +71,7 @@ class FireBase {
 
   Future<List<FuelStation>> getStationsUser() async {
     final dataList =
-        await _stationsUserCollection.doc(userApp.User.instance.phone).get();
+    await _stationsUserCollection.doc(userApp.User.instance.phone).get();
     if (dataList.exists) {
       List<FuelStation> list = List<FuelStation>.from(
           dataList["listStation"].map((e) => FuelStation.fromJson(e))).toList();
@@ -81,9 +80,23 @@ class FireBase {
     return [];
   }
 
+  Future<List<CheckOutData>> getLastInfoCheckOut() async {
+
+    try {
+      final dataList =
+      await _checkoutCollection
+          .doc(userApp.User.instance.phone)
+          .collection("checkout_list").orderBy("date",descending: true).limit(1).get();
+      print("rio 11:" + CheckOutData.fromJson(dataList.docs.first).toString());
+    }catch(e){
+      print(e.toString());
+    }
+    return [];
+  }
+
   Future<List<FuelPrice>> getPriceList() async {
     final dataList =
-        await _priceListCollection.doc(userApp.User.instance.phone).get();
+    await _priceListCollection.doc(userApp.User.instance.phone).get();
     if (dataList.exists) {
       List<FuelPrice> list = List<FuelPrice>.from(
           dataList["priceList"].map((e) => FuelPrice.fromJson(e))).toList();
@@ -99,8 +112,8 @@ class FireBase {
     return list;
   }
 
-  Future<void> updateStationUser(
-      List<FuelStation> stationList, bool isSetHasBeen) async {
+  Future<void> updateStationUser(List<FuelStation> stationList,
+      bool isSetHasBeen) async {
     var json = stationList.map((e) => e.toJson()).toList();
     await _stationsUserCollection
         .doc(userApp.User.instance.phone)
@@ -125,17 +138,26 @@ class FireBase {
         .set({"priceList": json});
   }
 
-  Future<void> addCheckoutData(CheckOutData data) async {
-    await _checkoutCollection
-        .doc(userApp.User.instance.phone)
-        .set({"pla": data.toJson()});
+  Future<void> addCheckoutData(CheckOutData data,int longTime) async {
+    try {
+
+      print("Rio 123 data: "+data.toString());
+      await _checkoutCollection.doc(userApp.User.instance.phone).collection(
+          "checkout_list").doc(longTime.toString()).set(data.toJson()
+      );
+    }catch(e){
+      print("Rio 123: "+e.toString());
+    }
   }
 
-  Future<int> getNumberCheckoutByDate() async {
-    // final data =
-    //     await _checkoutCollection.doc(userApp.User.instance.phone).;
-    // List<FuelStation> list = List<FuelStation>.from(
-    //     dataList["listStation"].map((e) => FuelStation.fromJson(e))).toList();
-    return 0;
+  Future<List<CheckOutData>> getCheckoutListByDate(String date) async {
+    final data = await _checkoutCollection
+        .doc(userApp.User.instance.phone)
+        .collection("checkout_list")
+        .where("date", isEqualTo: date).get();
+    List<CheckOutData> list =
+    List<CheckOutData>.from(data.docs.map((e) => CheckOutData.fromJson(e)))
+        .toList();
+    return list;
   }
 }

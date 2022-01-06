@@ -2,7 +2,7 @@ import 'package:yourfuel/models/debt.dart';
 import 'package:yourfuel/models/fuel_price.dart';
 import 'package:yourfuel/models/fuel_station.dart';
 
-class CheckOutData{
+class CheckOutData {
   int id;
   int numberCheckout;
   int totalSale;
@@ -13,8 +13,8 @@ class CheckOutData{
   List<FuelPrice> fuelPriceList;
   List<FuelStation> fuelStationList;
 
-  CheckOutData({
-      required this.id,
+  CheckOutData(
+      {required this.id,
       required this.numberCheckout,
       required this.totalSale,
       required this.totalDebt,
@@ -25,16 +25,21 @@ class CheckOutData{
       required this.fuelStationList});
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "numberCheckout": numberCheckout,
-    "totalSale": totalSale,
-    "totalDebt": totalDebt,
-    "actuallyReceived": actuallyReceived,
-    "date": date,
-    "debtList": debtList,
-    "fuelPriceList": fuelPriceList,
-    "fuelStationList": fuelStationList
-  };
+        "id": id,
+        "numberCheckout": numberCheckout,
+        "totalSale": totalSale,
+        "totalDebt": totalDebt,
+        "actuallyReceived": actuallyReceived,
+        "date": date,
+        "debtList":
+            (debtList.isEmpty) ? [] : debtList.map((e) => e.toJson()).toList(),
+        "fuelPriceList": (fuelPriceList.isEmpty)
+            ? []
+            : fuelPriceList.map((e) => e.toJson()).toList(),
+        "fuelStationList": (fuelStationList.isEmpty)
+            ? []
+            : fuelStationList.map((e) => e.toJson()).toList()
+      };
 
   factory CheckOutData.fromJson(json) {
     return CheckOutData(
@@ -43,11 +48,18 @@ class CheckOutData{
         totalSale: json["totalSale"] ?? 0,
         totalDebt: json["totalDebt"] ?? 0,
         actuallyReceived: json["actuallyReceived"] ?? 0,
-      date: json["date"] ?? 0,
-      debtList: json["debtList"],
-      fuelPriceList: json["fuelPriceList"],
-      fuelStationList: json["fuelStationList"],);
+        date: json["date"] ?? "",
+        debtList: List<Debt>.from(json["debtList"].map((e) => Debt.fromJson(e)))
+            .toList(),
+        fuelPriceList: List<FuelPrice>.from(
+            json["fuelPriceList"].map((e) => FuelPrice.fromJson(e))).toList(),
+        fuelStationList: List<FuelStation>.from(
+                json["fuelStationList"].map((e) => FuelStation.fromJson(e)))
+            .toList());
   }
 
-
+  @override
+  String toString() {
+    return 'CheckOutData{id: $id, numberCheckout: $numberCheckout, totalSale: $totalSale, totalDebt: $totalDebt, actuallyReceived: $actuallyReceived, date: $date, debtList: $debtList, fuelPriceList: $fuelPriceList, fuelStationList: $fuelStationList}';
+  }
 }

@@ -69,6 +69,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Result saved!`
+  String get Result_saved {
+    return Intl.message(
+      'Result saved!',
+      name: 'Result_saved',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
