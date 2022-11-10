@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:yourfuel/generated/l10n.dart';
 import 'package:yourfuel/models/debt.dart';
+import 'package:yourfuel/provider/base_provider.dart';
 import 'package:yourfuel/ui/check_out/check_out_bloc.dart';
 import 'package:yourfuel/utils/app_utils.dart';
 
@@ -15,13 +16,13 @@ class CheckOutPage extends StatefulWidget {
 }
 
 class _CheckOutPageState extends State<CheckOutPage> {
-  final CheckOutBlock _bloc= CheckOutBlock();
+  final CheckOutBlock _bloc = CheckOutBlock();
   var toDay;
   late TextStyle labelTextStyle;
   late TextStyle normalTextStyle;
+
   @override
   void initState() {
-
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       _bloc.getData();
     });
@@ -42,446 +43,498 @@ class _CheckOutPageState extends State<CheckOutPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: AppColors.pinkLightPurple,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: Text("Check day: ${DateFormat('dd-MM-yyyy').format(toDay)}"),
+        title: Text("${S.of(context).CheckDay}: ${DateFormat('dd-MM-yyyy').format(toDay)}"),
         backgroundColor: AppColors.primaryColor,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(8.0),
         child: StreamBuilder<bool>(
-          stream: _bloc.onGetData.stream,
-          initialData: false,
-          builder: (context, snapshot) {
-            return (snapshot.data!)?
-            Column(
-              children: [
-                Card(
-                  elevation: 5,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: StreamBuilder<bool>(
-                        stream: _bloc.onClickChangePrice.stream,
-                        initialData: _bloc.isChangingPrice,
-                        builder: (context, snapshot) {
-                          return Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      "Giá Xăng/Dầu:",
-                                      textAlign: TextAlign.start,
-                                      style: labelTextStyle,
-                                    ),
-                                  ),
-                                  NormalButton(
-                                    onTap: ()=>_bloc.clickChangePrice(),
-                                    buttonName:
-                                        !snapshot.data! ? "Thay đổi" : "Lưu",
-                                  )
-                                ],
-                              ),
-                              GridView.count(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  childAspectRatio: 1.5,
-                                  crossAxisCount: 3,
-                                  crossAxisSpacing: 15,
-                                  padding: EdgeInsets.zero,
-                                  children: _bloc.fuelPriceList
-                                      .skipWhile((value) => value.type <= 1)
-                                      .map(
-                                    (e) {
-                                      return MoneyTextField(
-                                        data: e.price.toString(),
-                                        isEnable: snapshot.data!,
-                                        maxLength: 6,
-                                        onDataChange: (value) => e.price = value,
-                                        labelText: e.name + ":",
-                                      );
-                                    },
-                                  ).toList()),
-                            ],
-                          );
-                        }),
-                  ),
-                ),
-                Card(
-                  elevation: 5,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: StreamBuilder<bool>(
-                        stream: _bloc.onClickChangeOldElectronicNumber.stream,
-                        initialData: _bloc.isChangingOldElectronicNumber,
-                        builder: (context, snapshot) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      "Số điện tử cũ:",
-                                      textAlign: TextAlign.start,
-                                      style: labelTextStyle,
-                                    ),
-                                  ),
-                                  NormalButton(
-                                    buttonName:
-                                        !snapshot.data! ? "Thay đổi" : "Lưu",
-                                    onTap: ()=>_bloc.clickChangeOldElectronicNumber(),
-                                  )
-                                ],
-                              ),
-                              GridView.count(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  childAspectRatio: 1.5,
-                                  crossAxisCount: 3,
-                                  crossAxisSpacing: 15,
-                                  padding: EdgeInsets.zero,
-                                  children: _bloc.fuelStationList.map(
-                                    (e) {
-                                      return NumberTextField(
-                                        isEnable: snapshot.data!,
-                                        data: e.oldElectronicNumber.toString(),
-                                        onDataChange: (value) =>
-                                            e.oldElectronicNumber = value,
-                                        labelText: e.typeName +" S"+
-                                            e.numberStation.toString() +
-                                            ":",
-                                      );
-                                    },
-                                  ).toList()),
-                            ],
-                          );
-                        }),
-                  ),
-                ),
-                Card(
-                  elevation: 5,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
+            stream: _bloc.onGetData.stream,
+            initialData: false,
+            builder: (context, snapshot) {
+              return (snapshot.data!)
+                  ? Column(
                       children: [
-                        SizedBox(
-                          width: double.infinity,
-                          child: Text(
-                            "Số điện tử mới:",
-                            textAlign: TextAlign.start,
-                            style: labelTextStyle,
-                          ),
-                        ),
-                        GridView.count(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            childAspectRatio: 1.5,
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 15,
-                            padding: EdgeInsets.zero,
-                            children: _bloc.fuelStationList.map(
-                              (e) {
-                                return NumberTextField(
-                                  onDataChange: (value) =>
-                                      e.newElectronicNumber = value,
-                                  labelText: e.typeName +" S"+
-                                      e.numberStation.toString() +
-                                      ":",
-                                );
-                              },
-                            ).toList()),
-                      ],
-                    ),
-                  ),
-                ),
-                Card(
-                  elevation: 5,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          width: double.infinity,
-                          child: Text(
-                            "Số kê:",
-                            textAlign: TextAlign.start,
-                            style: labelTextStyle,
-                          ),
-                        ),
-                        GridView.count(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            childAspectRatio: 1.5,
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 15,
-                            padding: EdgeInsets.zero,
-                            children: _bloc.fuelStationList.map(
-                              (e) {
-                                return NumberTextField(
-                                  onDataChange: (value) => e.engineNumber = value,
-                                  labelText: e.typeName +" S"+
-                                      e.numberStation.toString() +
-                                      ":",
-                                );
-                              },
-                            ).toList()),
-                      ],
-                    ),
-                  ),
-                ),
-                Card(
-                  elevation: 5,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          width: double.infinity,
-                          child: Text(
-                            "Nợ:",
-                            textAlign: TextAlign.start,
-                            style: labelTextStyle,
-                          ),
-                        ),
-                        StreamBuilder<List<Debt>>(
-                            stream: _bloc.onClickDebtListener.stream,
-                            initialData: _bloc.debtList,
-                            builder: (context, snapshot) {
-                              _bloc.debtList = [...snapshot.data!];
-                              return Column(
-                                children: snapshot.data!
-                                    .map((item) => DebtItem(
-                                          key: ValueKey(item.id.toString()),
-                                          item: item,
-                                          priceType: _bloc.fuelPriceList,
-                                          onValueChange: (value) {
-                                            item = value;
-                                          },
-                                          onDelete: () =>
-                                              _bloc.removeDebt(snapshot.data!, item.id),
-                                        ))
-                                    .toList(),
-                              );
-                            }),
-                        OutlinedButton.icon(
-                          icon: const Icon(
-                            Icons.add,
-                            color: AppColors.primaryColorDark,
-                          ),
-                          onPressed: ()=> _bloc.addDebt(),
-                          style: ElevatedButton.styleFrom(
-                            side: const BorderSide(
-                                color: AppColors.primaryColor, width: 2),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(32.0),
-                            ),
-                          ),
-                          label: const Text(
-                            "Thêm công nợ",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.primaryColorDark,
-                                fontSize: 15),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: StreamBuilder<bool>(
-                      stream: _bloc.onClickChangeData.stream,
-                      initialData: _bloc.isChangingData,
-                      builder: (context, snapshot) {
-                        return NormalButton(
-                          onTap: ()=>_bloc.clickCalculate(),
-                          buttonName: "Tính kết quả",
-                          canClick: !snapshot.data!,
-                        );
-                      }),
-                ),
-                Card(
-                  elevation: 5,
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(8.0),
-                    alignment: Alignment.centerLeft,
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: double.infinity,
-                            child: Text(
-                              "Tính Toán :",
-                              textAlign: TextAlign.center,
-                              style: labelTextStyle,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          StreamBuilder<bool>(
-                              stream: _bloc.onClickCalculateListener.stream,
-                              initialData: false,
-                              builder: (context, snapshot) {
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    for (int i = 0; i < _bloc.fuelStationList.length; i++)
-                                      Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                        Card(
+                          elevation: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: StreamBuilder<bool>(
+                                stream: _bloc.onClickChangePrice.stream,
+                                initialData: _bloc.isChangingPrice,
+                                builder: (context, snapshot) {
+                                  return Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
-                                          Text(
-                                            _bloc.fuelStationList[i].fullTypeName +" ${S.of(context).Station_number} "+
-                                                _bloc.fuelStationList[i]
-                                                    .numberStation
-                                                    .toString() +
-                                                ":",
-                                            style: labelTextStyle,
-                                            textAlign: TextAlign.start,
+                                          Expanded(
+                                            child: Text(
+                                              "Giá Xăng/Dầu:",
+                                              textAlign: TextAlign.start,
+                                              style: labelTextStyle,
+                                            ),
                                           ),
-                                          Text(
-                                            "Electronic: " +
-                                                _bloc.fuelStationList[i]
-                                                    .newElectronicNumber
-                                                    .toString() +
-                                                " - " +
-                                                _bloc.fuelStationList[i]
-                                                    .oldElectronicNumber
-                                                    .toString() +
-                                                " = " +
-                                                (_bloc.fuelStationList[i]
-                                                            .newElectronicNumber -
-                                                        _bloc.fuelStationList[i]
-                                                            .oldElectronicNumber)
-                                                    .toString() +
-                                                " Lit",
-                                            style: normalTextStyle,
-                                            textAlign: TextAlign.start,
-                                          ),
-                                          Text(
-                                            "Engine: " +
-                                                _bloc.fuelStationList[i]
-                                                    .engineNumber
-                                                    .toString(),
-                                            style: normalTextStyle,
-                                            textAlign: TextAlign.start,
-                                          ),
+                                          NormalButton(
+                                            onTap: () =>
+                                                _bloc.clickChangePrice(),
+                                            buttonName: !snapshot.data!
+                                                ? "Thay đổi"
+                                                : "Lưu",
+                                          )
                                         ],
-                                      )
-                                  ],
-                                );
-                              }),
-                        ]),
-                  ),
-                ),
-                Card(
-                  elevation: 5,
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(8.0),
-                    alignment: Alignment.centerLeft,
-                    child: StreamBuilder<Object>(
-                        stream: _bloc.onClickCalculateListener.stream,
-                        builder: (context, snapshot) {
-                          _bloc.checkForCanClickSave();
-
-                          return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                                      ),
+                                      GridView.count(
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          childAspectRatio: 1.5,
+                                          crossAxisCount: 3,
+                                          crossAxisSpacing: 15,
+                                          padding: EdgeInsets.zero,
+                                          children: _bloc.fuelPriceList
+                                              .skipWhile(
+                                                  (value) => value.type <= 1)
+                                              .map(
+                                            (e) {
+                                              return MoneyTextField(
+                                                data: e.price.toString(),
+                                                isEnable: snapshot.data!,
+                                                maxLength: 6,
+                                                onDataChange: (value) =>
+                                                    e.price = value,
+                                                labelText: e.name + ":",
+                                              );
+                                            },
+                                          ).toList()),
+                                    ],
+                                  );
+                                }),
+                          ),
+                        ),
+                        Card(
+                          elevation: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: StreamBuilder<bool>(
+                                stream: _bloc
+                                    .onClickChangeOldElectronicNumber.stream,
+                                initialData:
+                                    _bloc.isChangingOldElectronicNumber,
+                                builder: (context, snapshot) {
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              "Số điện tử cũ:",
+                                              textAlign: TextAlign.start,
+                                              style: labelTextStyle,
+                                            ),
+                                          ),
+                                          NormalButton(
+                                            buttonName: !snapshot.data!
+                                                ? "Thay đổi"
+                                                : "Lưu",
+                                            onTap: () => _bloc
+                                                .clickChangeOldElectronicNumber(),
+                                          )
+                                        ],
+                                      ),
+                                      GridView.count(
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          childAspectRatio: 1.5,
+                                          crossAxisCount: 3,
+                                          crossAxisSpacing: 15,
+                                          padding: EdgeInsets.zero,
+                                          children: _bloc.fuelStationList.map(
+                                            (e) {
+                                              return NumberTextField(
+                                                isEnable: snapshot.data!,
+                                                data: e.oldElectronicNumber
+                                                    .toString(),
+                                                onDataChange: (value) =>
+                                                    e.oldElectronicNumber =
+                                                        value,
+                                                labelText: e.typeName +
+                                                    " Trụ " +
+                                                    e.numberStation.toString() +
+                                                    ":",
+                                              );
+                                            },
+                                          ).toList()),
+                                    ],
+                                  );
+                                }),
+                          ),
+                        ),
+                        Card(
+                          elevation: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
                               children: [
                                 SizedBox(
                                   width: double.infinity,
                                   child: Text(
-                                    "Kết quả:",
-                                    textAlign: TextAlign.center,
+                                    "Số điện tử mới:",
+                                    textAlign: TextAlign.start,
                                     style: labelTextStyle,
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
+                                GridView.count(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    childAspectRatio: 1.5,
+                                    crossAxisCount: 3,
+                                    crossAxisSpacing: 15,
+                                    padding: EdgeInsets.zero,
+                                    children: _bloc.fuelStationList.map(
+                                      (e) {
+                                        return NumberTextField(
+                                          onDataChange: (value) =>
+                                              e.newElectronicNumber = value,
+                                          labelText: e.typeName +
+                                              " Trụ " +
+                                              e.numberStation.toString() +
+                                              ":",
+                                        );
+                                      },
+                                    ).toList()),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Card(
+                          elevation: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
                                 SizedBox(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: _bloc.fuelPriceList
-                                        .skipWhile((value) => value.type <= 1)
-                                        .map((e) {
-                                      int totalFuelByType = _bloc.getTotalFuelByType(e);
-                                      int totalMoneyByType =
-                                          totalFuelByType * e.price;
-                                      return Text(
-                                        "${e.name}: ${totalFuelByType.toString()} L = ${AppConstants.moneyFormat.format(totalMoneyByType)} vnd",
-                                        style: normalTextStyle,
-                                        textAlign: TextAlign.start,
+                                  width: double.infinity,
+                                  child: Text(
+                                    "Số kê:",
+                                    textAlign: TextAlign.start,
+                                    style: labelTextStyle,
+                                  ),
+                                ),
+                                GridView.count(
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    childAspectRatio: 1.5,
+                                    crossAxisCount: 3,
+                                    crossAxisSpacing: 15,
+                                    padding: EdgeInsets.zero,
+                                    children: _bloc.fuelStationList.map(
+                                      (e) {
+                                        return NumberTextField(
+                                          onDataChange: (value) =>
+                                              e.engineNumber = value,
+                                          labelText: e.typeName +
+                                              " Trụ " +
+                                              e.numberStation.toString() +
+                                              ":",
+                                        );
+                                      },
+                                    ).toList()),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Card(
+                          elevation: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: Text(
+                                    "Nợ:",
+                                    textAlign: TextAlign.start,
+                                    style: labelTextStyle,
+                                  ),
+                                ),
+                                StreamBuilder<List<Debt>>(
+                                    stream: _bloc.onClickDebtListener.stream,
+                                    initialData: _bloc.debtList,
+                                    builder: (context, snapshot) {
+                                      _bloc.debtList = [...snapshot.data!];
+                                      return Column(
+                                        children: snapshot.data!
+                                            .map((item) => DebtItem(
+                                                  key: ValueKey(
+                                                      item.id.toString()),
+                                                  item: item,
+                                                  priceType:
+                                                      _bloc.fuelPriceList,
+                                                  onValueChange: (value) {
+                                                    item = value;
+                                                  },
+                                                  onDelete: () =>
+                                                      _bloc.removeDebt(
+                                                          snapshot.data!,
+                                                          item.id),
+                                                ))
+                                            .toList(),
                                       );
-                                    }).toList(),
+                                    }),
+                                OutlinedButton.icon(
+                                  icon: const Icon(
+                                    Icons.add,
+                                    color: AppColors.primaryColorDark,
                                   ),
-                                ),
-                                if (_bloc.totalDebt > 0 || _bloc.totalDebtOtherFuel > 0)
-                                  Text(
-                                    "Debt:",
-                                    style: labelTextStyle,
-                                    textAlign: TextAlign.start,
+                                  onPressed: () => _bloc.addDebt(),
+                                  style: ElevatedButton.styleFrom(
+                                    side: const BorderSide(
+                                        color: AppColors.primaryColor,
+                                        width: 2),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(32.0),
+                                    ),
                                   ),
-                                if (_bloc.totalDebt > 0 || _bloc.totalDebtOtherFuel > 0)
-                                  debtShowList(),
-                                Text(
-                                  "Total sale: ${AppConstants.moneyFormat.format(_bloc.totalSale)} vnd",
-                                  style: labelTextStyle,
-                                  textAlign: TextAlign.start,
-                                ),
-                                Text(
-                                  "Total debt: ${AppConstants.moneyFormat.format(_bloc.totalDebt)} vnd",
-                                  style: labelTextStyle,
-                                  textAlign: TextAlign.start,
-                                ),
-                                if (_bloc.totalDebtOtherFuel > 0)
-                                  Text(
-                                    "Total debt other fuel: ${AppConstants.moneyFormat.format(_bloc.totalDebtOtherFuel)} vnd",
-                                    style: labelTextStyle,
-                                    textAlign: TextAlign.start,
+                                  label: const Text(
+                                    "Thêm công nợ",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.primaryColorDark,
+                                        fontSize: 15),
                                   ),
-                                Text(
-                                  "Actually received: ${AppConstants.moneyFormat.format(_bloc.actuallyReceived)} vnd",
-                                  style: labelTextStyle,
-                                  textAlign: TextAlign.start,
-                                ),
-                              ]);
-                        }),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                StreamBuilder<bool>(
-                    stream: _bloc.onCanSaveResult.stream,
-                    initialData: false,
-                    builder: (context, snapshot) {
-                      return NormalButton(
-                        onTap: ()=>_bloc.clickSaveResult(context),
-                        buttonName: "Lưu kết quả",
-                        canClick: snapshot.data!,
-                      );
-                    }),
-                const SizedBox(
-                  height: 20,
-                ),
-              ],
-            ): Container();
-          }
-        ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: StreamBuilder<bool>(
+                              stream: _bloc.onClickChangeData.stream,
+                              initialData: _bloc.isChangingData,
+                              builder: (context, snapshot) {
+                                return NormalButton(
+                                  onTap: () => _bloc.clickCalculate(),
+                                  buttonName: "Tính kết quả",
+                                  canClick: !snapshot.data!,
+                                );
+                              }),
+                        ),
+                        Card(
+                          elevation: 5,
+                          child: Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(8.0),
+                            alignment: Alignment.centerLeft,
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: Text(
+                                      "Tính Toán :",
+                                      textAlign: TextAlign.center,
+                                      style: labelTextStyle,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  StreamBuilder<bool>(
+                                      stream:
+                                          _bloc.onClickCalculateListener.stream,
+                                      initialData: false,
+                                      builder: (context, snapshot) {
+                                        return Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            for (int i = 0;
+                                                i <
+                                                    _bloc
+                                                        .fuelStationList.length;
+                                                i++)
+                                              Column(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    _bloc.fuelStationList[i]
+                                                            .fullTypeName +
+                                                        " ${S.of(context).Station_number} " +
+                                                        _bloc.fuelStationList[i]
+                                                            .numberStation
+                                                            .toString() +
+                                                        ":",
+                                                    style: labelTextStyle,
+                                                    textAlign: TextAlign.start,
+                                                  ),
+                                                  Text(
+                                                    "${S.of(mainContext).Electronic}: " +
+                                                        _bloc.fuelStationList[i]
+                                                            .newElectronicNumber
+                                                            .toString() +
+                                                        " - " +
+                                                        _bloc.fuelStationList[i]
+                                                            .oldElectronicNumber
+                                                            .toString() +
+                                                        " = " +
+                                                        (_bloc
+                                                                    .fuelStationList[
+                                                                        i]
+                                                                    .newElectronicNumber -
+                                                                _bloc
+                                                                    .fuelStationList[
+                                                                        i]
+                                                                    .oldElectronicNumber)
+                                                            .toString() +
+                                                        " Lít",
+                                                    style: normalTextStyle,
+                                                    textAlign: TextAlign.start,
+                                                  ),
+                                                  Text(
+                                                    "${S.of(mainContext).Engine}: " +
+                                                        _bloc.fuelStationList[i]
+                                                            .engineNumber
+                                                            .toString(),
+                                                    style: normalTextStyle,
+                                                    textAlign: TextAlign.start,
+                                                  ),
+                                                ],
+                                              )
+                                          ],
+                                        );
+                                      }),
+                                ]),
+                          ),
+                        ),
+                        Card(
+                          elevation: 5,
+                          child: Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(8.0),
+                            alignment: Alignment.centerLeft,
+                            child: StreamBuilder<bool>(
+                                stream: _bloc.onClickCalculateListener.stream,
+                                initialData: false,
+                                builder: (context, snapshot) {
+                                  if (snapshot.data!) {
+                                    _bloc.checkForCanClickSave();
+                                  }
+                                  return (!snapshot.data!)
+                                      ? Container()
+                                      : Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                              SizedBox(
+                                                width: double.infinity,
+                                                child: Text(
+                                                  "Kết quả:",
+                                                  textAlign: TextAlign.center,
+                                                  style: labelTextStyle,
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              SizedBox(
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: _bloc.fuelPriceList
+                                                      .skipWhile((value) =>
+                                                          value.type <= 1)
+                                                      .map((e) {
+                                                    int totalFuelByType = _bloc
+                                                        .getTotalFuelByType(e);
+                                                    int totalMoneyByType =
+                                                        totalFuelByType *
+                                                            e.price;
+                                                    return Text(
+                                                      "${e.name}: ${totalFuelByType.toString()} Lít = ${AppConstants.moneyFormat.format(totalMoneyByType)} vnđ",
+                                                      style: normalTextStyle,
+                                                      textAlign:
+                                                          TextAlign.start,
+                                                    );
+                                                  }).toList(),
+                                                ),
+                                              ),
+                                              if (_bloc.totalDebt > 0 ||
+                                                  _bloc.totalDebtOtherFuel > 0)
+                                                Text(
+                                                  "Nợ:",
+                                                  style: labelTextStyle,
+                                                  textAlign: TextAlign.start,
+                                                ),
+                                              if (_bloc.totalDebt > 0 ||
+                                                  _bloc.totalDebtOtherFuel > 0)
+                                                debtShowList(),
+                                              Text(
+                                                "Tổng doanh thu: ${AppConstants.moneyFormat.format(_bloc.totalSale)} vnd",
+                                                style: labelTextStyle,
+                                                textAlign: TextAlign.start,
+                                              ),
+                                              Text(
+                                                "Tổng nợ X/D: ${AppConstants.moneyFormat.format(_bloc.totalDebt)} vnd",
+                                                style: labelTextStyle,
+                                                textAlign: TextAlign.start,
+                                              ),
+                                              if (_bloc.totalDebtOtherFuel > 0)
+                                                Text(
+                                                  "Tổng nợ nhớt: ${AppConstants.moneyFormat.format(_bloc.totalDebtOtherFuel)} (vnd/Lit)",
+                                                  style: labelTextStyle,
+                                                  textAlign: TextAlign.start,
+                                                ),
+                                              Text(
+                                                "Thực nhận: ${AppConstants.moneyFormat.format(_bloc.actuallyReceived)} vnd",
+                                                style: labelTextStyle,
+                                                textAlign: TextAlign.start,
+                                              ),
+                                            ]);
+                                }),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        StreamBuilder<bool>(
+                            stream: _bloc.onCanSaveResult.stream,
+                            initialData: false,
+                            builder: (context, snapshot) {
+                              return NormalButton(
+                                onTap: () => _bloc.clickSaveResult(context),
+                                buttonName: "Lưu kết quả",
+                                canClick: snapshot.data!,
+                              );
+                            }),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                      ],
+                    )
+                  : Container();
+            }),
       ),
     );
   }

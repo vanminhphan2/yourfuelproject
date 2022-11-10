@@ -20,6 +20,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    // phoneValue.text="0978653402";
+    // passValue.text="tu123456";
     phoneValue.text="0329269019";
     passValue.text="12345678";
     return Scaffold(

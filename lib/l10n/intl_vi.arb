@@ -1,5 +1,15 @@
 {
   "Station_number": "Trụ số",
   "Notify": "Thông báo!",
-  "Result_saved": "Đã lưu kết quả!"
+  "Result_saved": "Đã lưu kết quả!",
+  "Staff":"Nhân viên",
+  "Checkout": "Chốt số",
+  "ImportFuel":"Nhập kho",
+  "DailyCheck": "Kiểm ngày",
+  "Statistics": "Thống kê",
+  "Setting": "Cài đặt trụ",
+  "CheckDay": "Chốt ngày",
+
+  "Electronic": "Số điện tử",
+  "Engine": "Số kê"
 }

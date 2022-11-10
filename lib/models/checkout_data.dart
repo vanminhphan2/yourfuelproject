@@ -8,6 +8,7 @@ class CheckOutData {
   int totalSale;
   int totalDebt;
   int actuallyReceived;
+  int totalDebtOtherFuel;
   String date;
   List<Debt> debtList;
   List<FuelPrice> fuelPriceList;
@@ -20,7 +21,8 @@ class CheckOutData {
       required this.totalDebt,
       required this.actuallyReceived,
       required this.date,
-      required this.debtList,
+        required this.debtList,
+        required this.totalDebtOtherFuel,
       required this.fuelPriceList,
       required this.fuelStationList});
 
@@ -28,7 +30,8 @@ class CheckOutData {
         "id": id,
         "numberCheckout": numberCheckout,
         "totalSale": totalSale,
-        "totalDebt": totalDebt,
+    "totalDebt": totalDebt,
+    "totalDebtOtherFuel": totalDebtOtherFuel,
         "actuallyReceived": actuallyReceived,
         "date": date,
         "debtList":
@@ -47,6 +50,7 @@ class CheckOutData {
         numberCheckout: json["numberCheckout"] ?? 1,
         totalSale: json["totalSale"] ?? 0,
         totalDebt: json["totalDebt"] ?? 0,
+        totalDebtOtherFuel: json["totalDebtOtherFuel"] ?? 0,
         actuallyReceived: json["actuallyReceived"] ?? 0,
         date: json["date"] ?? "",
         debtList: List<Debt>.from(json["debtList"].map((e) => Debt.fromJson(e)))
@@ -60,6 +64,6 @@ class CheckOutData {
 
   @override
   String toString() {
-    return 'CheckOutData{id: $id, numberCheckout: $numberCheckout, totalSale: $totalSale, totalDebt: $totalDebt, actuallyReceived: $actuallyReceived, date: $date, debtList: $debtList, fuelPriceList: $fuelPriceList, fuelStationList: $fuelStationList}';
+    return 'CheckOutData{id: $id, numberCheckout: $numberCheckout, totalSale: $totalSale, totalDebt: $totalDebt, actuallyReceived: $actuallyReceived, totalDebtOtherFuel: $totalDebtOtherFuel, date: $date, debtList: $debtList, fuelPriceList: $fuelPriceList, fuelStationList: $fuelStationList}';
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:yourfuel/models/checkout_data.dart';
 import 'package:yourfuel/models/fuel_price.dart';
 import 'package:yourfuel/models/fuel_station.dart';
+import 'package:yourfuel/models/nhap_kho_data.dart';
 import 'package:yourfuel/models/user.dart' as userApp;
 
 class FireBase {
@@ -22,6 +23,8 @@ class FireBase {
   FirebaseFirestore.instance.collection('price_list');
   final CollectionReference _checkoutCollection =
   FirebaseFirestore.instance.collection('checkout');
+  final CollectionReference _importFuelCollection =
+  FirebaseFirestore.instance.collection('import_fuel');
 
   Future<bool> checkExitsPhone(String phone) async {
     var isExits = false;
@@ -159,5 +162,18 @@ class FireBase {
     List<CheckOutData>.from(data.docs.map((e) => CheckOutData.fromJson(e)))
         .toList();
     return list;
+  }
+
+
+  Future<void> addImportFuelData(NhapKhoData data,int longTime) async {
+    try {
+
+      print("Rio addImportFuelData : "+data.toString());
+      await _importFuelCollection.doc(userApp.User.instance.phone).collection(
+          "import_list").doc(longTime.toString()).set(data.toJson()
+      );
+    }catch(e){
+      print("Rio addImportFuelData: "+e.toString());
+    }
   }
 }

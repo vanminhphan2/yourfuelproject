@@ -1,5 +1,16 @@
 {
   "Station_number": "Station",
   "Notify": "Warning!",
-  "Result_saved": "Result saved!"
+  "Result_saved": "Result saved!",
+  "Staff":"Staff",
+  "Checkout": "Checkout",
+  "ImportFuel":"Import Fuel",
+  "DailyCheck": "Daily Check",
+  "Statistics": "Statistics",
+  "Setting": "Setting",
+  "CheckDay": "Check Day",
+
+
+  "Electronic": "Electronic",
+  "Engine": "Engine"
 }

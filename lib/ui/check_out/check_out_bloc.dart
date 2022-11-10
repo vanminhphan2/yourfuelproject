@@ -146,6 +146,7 @@ class CheckOutBlock {
 
   void clickCalculate() {
     print("_onClickCalculate");
+
     if (fuelPriceList
         .any((element) => element.type > 1 && element.price <= 0)) {
       appController.dialog.showDefaultDialog(
@@ -231,6 +232,7 @@ class CheckOutBlock {
                 numberCheckout: numberCheck,
                 totalSale: totalSale,
                 totalDebt: totalDebt,
+                totalDebtOtherFuel: totalDebtOtherFuel,
                 actuallyReceived: actuallyReceived,
                 date: daytime,
                 debtList: debtList,

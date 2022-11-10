@@ -24,27 +24,32 @@ class LoginBloc {
 
     print("check login phone: $phone     pass: $pass");
 
-    var isExitsPhone = await FireBase().checkExitsPhone(phone);
-    if (isExitsPhone) {
-      var passServer = await FireBase().checkPass(phone: phone);
+    try{
 
-      print(
-          "check login pass: ${AppHelper.generateMd5(pass)}     passServer: $passServer");
-      if (AppHelper.generateMd5(pass) == passServer) {
-        print("Login success!");
+      var isExitsPhone = await FireBase().checkExitsPhone(phone);
+      if (isExitsPhone) {
+        var passServer = await FireBase().checkPass(phone: phone);
 
-        final user = await FireBase().getUserData(phone: phone);
+        print(
+            "check login pass: ${AppHelper.generateMd5(pass)}     passServer: $passServer");
+        if (AppHelper.generateMd5(pass) == passServer) {
+          print("Login success!");
 
-        context.read<MainProvider>().userInfo = user;
-        User.instance=user;
-        context.read<MainProvider>().setIsLogin = true;
+          final user = await FireBase().getUserData(phone: phone);
+
+          context.read<MainProvider>().userInfo = user;
+          User.instance=user;
+          context.read<MainProvider>().setIsLogin = true;
+        } else {
+          appController.dialog
+              .showDefaultDialog(title: "Thong bao!", message: "Sai mat khau!");
+        }
       } else {
-        appController.dialog
-            .showDefaultDialog(title: "Thong bao!", message: "Sai mat khau!");
+        appController.dialog.showDefaultDialog(
+            title: "Thong bao!", message: "Tai khoan khong ton tai!");
       }
-    } else {
-      appController.dialog.showDefaultDialog(
-          title: "Thong bao!", message: "Tai khoan khong ton tai!");
+    }catch(e){
+      print(e.toString());
     }
 
     appController.loading.hide();

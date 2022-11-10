@@ -1,8 +1,12 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:yourfuel/generated/l10n.dart';
 import 'package:yourfuel/models/staff.dart';
+import 'package:yourfuel/provider/base_provider.dart';
 import 'package:yourfuel/ui/check_out/check_out.dart';
+import 'package:yourfuel/ui/daily_check/daily_check.dart';
+import 'package:yourfuel/ui/nhap_kho/nhap_kho.dart';
 import 'package:yourfuel/ui/setting/setting.dart';
 import 'package:yourfuel/utils/app_utils.dart';
 import 'package:yourfuel/widgets/bg_top_home.dart';
@@ -26,7 +30,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-
     initFunctions();
     initStaffList();
     super.initState();
@@ -122,7 +125,7 @@ class _HomePageState extends State<HomePage> {
                     Expanded(
                       flex: 3,
                       child: PageView.builder(
-                        itemCount: _functionPages.length,
+                          itemCount: _functionPages.length,
                           controller: pageViewController,
                           itemBuilder: (context, index) {
                             return _functionPages[index];
@@ -131,8 +134,9 @@ class _HomePageState extends State<HomePage> {
                     DotsIndicator(
                       controller: pageViewController,
                       itemCount: _functionPages.length,
-                      onPageSelected: (page){
-                        pageViewController.animateToPage(page, duration: _duration, curve: _curve);
+                      onPageSelected: (page) {
+                        pageViewController.animateToPage(page,
+                            duration: _duration, curve: _curve);
                       },
                     ),
                     Spacer()
@@ -144,58 +148,70 @@ class _HomePageState extends State<HomePage> {
         ]));
   }
 
-  void _onClickDailyCheck(BuildContext context) {
-    AppHelper.navigatePush(context, AppScreenName.dailyCheck, const CheckOutPage());
+  void _onClickCheckOut(BuildContext context) {
+    AppHelper.navigatePush(
+        context, AppScreenName.checkout, const CheckOutPage());
   }
 
   void _onClickSetting(BuildContext context) {
     AppHelper.navigatePush(context, AppScreenName.setting, const SettingPage());
   }
 
-  void _onClickStaff() {}
+  void _onClickDailyCheck(BuildContext context) {
+    AppHelper.navigatePush(context, AppScreenName.dailyCheck, DailyCheckPage());
+  }
 
-  void _onClickAddStaff() {}
+  void _onClickNhapKho(BuildContext context) {
+    AppHelper.navigatePush(context, AppScreenName.nhapKho, NhapKhoPage());
+  }
 
-  void initFunctions(){
-
+  void initFunctions() {
     _functionPages = <Widget>[
       GridView.count(
         crossAxisCount: 3,
         mainAxisSpacing: 10,
         physics: const NeverScrollableScrollPhysics(),
         children: [
-          const StoreFeature(
+          StoreFeature(
             icon: "assets/icons/icon_worker.svg",
-            name: "Staff",
+            name: S.of(mainContext).Staff,
           ),
           InkWell(
-            onTap: () => _onClickDailyCheck(context),
-            child: const StoreFeature(
-              icon: "assets/icons/icon_gas_station.svg",
-              name: "Checkout",
-            ),
-          ),
-          const StoreFeature(
-            icon: "assets/icons/icon_tank_truck.svg",
-            name: "Import Fuel",
-          ),
-          const InkWell(
+            onTap: () => _onClickCheckOut(context),
             child: StoreFeature(
-              icon: "assets/icons/icon_check_note.svg",
-              name: "Daily Check",
+              icon: "assets/icons/icon_gas_station.svg",
+              name: S.of(mainContext).Checkout,
             ),
-          ),
-          const StoreFeature(
-            icon: "assets/icons/icon_statistics.svg",
-            name: "Statistics",
           ),
           InkWell(
             onTap: (){
+              _onClickNhapKho(context);
+            },
+            child: StoreFeature(
+              icon: "assets/icons/icon_tank_truck.svg",
+              name: S.of(mainContext).ImportFuel,
+            ),
+          ),
+          InkWell(
+            onTap: (){
+              _onClickDailyCheck(context);
+            },
+            child: StoreFeature(
+              icon: "assets/icons/icon_check_note.svg",
+              name: S.of(mainContext).DailyCheck,
+            ),
+          ),
+          StoreFeature(
+            icon: "assets/icons/icon_statistics.svg",
+            name: S.of(mainContext).Statistics,
+          ),
+          InkWell(
+            onTap: () {
               _onClickSetting(context);
             },
-            child: const StoreFeature(
+            child: StoreFeature(
               icon: "assets/icons/icon_setting.svg",
-              name: "Setting",
+              name: S.of(mainContext).Setting,
             ),
           ),
         ],
@@ -214,8 +230,7 @@ class _HomePageState extends State<HomePage> {
     ];
   }
 
-  void initStaffList(){
-
+  void initStaffList() {
     staffList.add(Staff(
         1,
         "tran huynh tuan",

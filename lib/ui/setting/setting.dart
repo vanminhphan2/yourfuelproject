@@ -95,7 +95,7 @@ class _SettingPageState extends State<SettingPage> {
                         const Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "Your stations:",
+                              "Trụ xăng dầu của bạn:",
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             )),
@@ -118,7 +118,7 @@ class _SettingPageState extends State<SettingPage> {
                                             width: double.infinity,
                                             alignment: Alignment.center,
                                             child: const Text(
-                                                "You don't have station!"),
+                                                "Bạn chưa có trụ nào!"),
                                           )
                                         : Column(children: [
                                             for (int i = 0;
@@ -138,7 +138,7 @@ class _SettingPageState extends State<SettingPage> {
                         const Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "Add petrol/oil stations:",
+                              "Thêm trụ xăng dầu:",
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             )),

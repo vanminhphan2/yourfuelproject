@@ -79,6 +79,96 @@ class S {
       args: [],
     );
   }
+
+  /// `Staff`
+  String get Staff {
+    return Intl.message(
+      'Staff',
+      name: 'Staff',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Checkout`
+  String get Checkout {
+    return Intl.message(
+      'Checkout',
+      name: 'Checkout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Import Fuel`
+  String get ImportFuel {
+    return Intl.message(
+      'Import Fuel',
+      name: 'ImportFuel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Daily Check`
+  String get DailyCheck {
+    return Intl.message(
+      'Daily Check',
+      name: 'DailyCheck',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Statistics`
+  String get Statistics {
+    return Intl.message(
+      'Statistics',
+      name: 'Statistics',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Setting`
+  String get Setting {
+    return Intl.message(
+      'Setting',
+      name: 'Setting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check Day`
+  String get CheckDay {
+    return Intl.message(
+      'Check Day',
+      name: 'CheckDay',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Electronic`
+  String get Electronic {
+    return Intl.message(
+      'Electronic',
+      name: 'Electronic',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Engine`
+  String get Engine {
+    return Intl.message(
+      'Engine',
+      name: 'Engine',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
