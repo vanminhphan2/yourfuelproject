@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yourfuel/models/user.dart';
+import '../models/user.dart';
 
 class MainProvider extends ChangeNotifier{
 

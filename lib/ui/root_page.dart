@@ -39,7 +39,7 @@ class _RootPageState extends State<RootPage> {
       const AccountPage(),
     ];
 
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (appController.loading.isLoading) {
         appController.loading.hide();
       }

@@ -23,7 +23,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _bloc.getData();
     });
 

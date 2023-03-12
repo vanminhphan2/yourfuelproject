@@ -15,7 +15,7 @@ class NhapKhoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _bloc.getData();
     });
     return Scaffold(

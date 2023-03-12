@@ -19,7 +19,7 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _bloc.getData();
     });
     // yourStations.add(FuelStation(

@@ -29,7 +29,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_localizations:
+  flutter_localizations: 
     sdk: flutter
 
 
@@ -43,10 +43,10 @@ dependencies:
   #intl: ^0.17.0
   flutter_svg: ^1.0.0
 
-  firebase_auth: ^3.3.4 #firebase_auth_oauth
-  firebase_core: ^1.10.6 #firebase_core
-  firebase_storage: ^10.2.4 #firebase_storage
-  cloud_firestore: ^3.1.5 #firebase_cloud_store
+  firebase_auth: ^4.2.10 #firebase_auth_oauth
+  firebase_core: ^2.7.1 #firebase_core
+  firebase_storage: ^11.0.15 #firebase_storage
+  cloud_firestore: ^4.4.4 #firebase_cloud_store
 
   crypto: ^3.0.1 #Cryptographic hashing functions
 

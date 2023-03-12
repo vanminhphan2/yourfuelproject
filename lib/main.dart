@@ -1,13 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:yourfuel/firebase_options.dart';
-import 'package:yourfuel/provider/base_provider.dart';
-import 'package:yourfuel/provider/main_provider.dart';
-import 'package:yourfuel/ui/root_page.dart';
-import 'package:yourfuel/utils/app_config.dart';
-import 'package:yourfuel/utils/app_utils.dart';
-import 'package:yourfuel/widgets/app_loading.dart';
+import 'provider/base_provider.dart';
+import 'provider/main_provider.dart';
+import 'ui/root_page.dart';
+import 'utils/app_config.dart';
+import 'utils/app_utils.dart';
+import 'widgets/app_loading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'generated/l10n.dart';
